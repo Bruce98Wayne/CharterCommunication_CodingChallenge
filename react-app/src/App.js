@@ -11,6 +11,9 @@ function App() {
           Click on the button below to compute the Total and Monthly rewards:
         </p>
         <RewardPointCalculator />
+        <h6>
+          Check the console (Ctrl + shift + i) to view the monthly rewards!
+        </h6>
       </header>
     </div>
   );

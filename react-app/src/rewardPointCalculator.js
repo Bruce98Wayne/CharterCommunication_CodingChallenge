@@ -57,7 +57,6 @@ export default class RewardPointCalculator extends React.Component {
         <div>
           <header>Total Rewards: </header>
           {this.state.totalReward}
-          {/* {this.state.monthlyReward.forEach((el) => console.log(el))} */}
         </div>
       </div>
     );
