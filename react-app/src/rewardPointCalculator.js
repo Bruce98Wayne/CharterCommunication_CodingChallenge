@@ -1,64 +1,64 @@
 import React from "react";
-import { MonthlyTransactions } from "./data/transactionData";
+import {MonthlyTransactions} from "./data/transactionData";
 
 export default class RewardPointCalculator extends React.Component {
-  state = {
-    varMonthlyReward: [],
-    totalReward: 0,
-  };
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      monthlyReward: {},
-      totalReward: 0,
+    state = {
+        varMonthlyReward: [],
+        totalReward: 0,
     };
-  }
 
-  trasnactions = {};
+    constructor(props) {
+        super(props);
+        this.state = {
+            monthlyReward: {},
+            totalReward: 0,
+        };
+    }
 
-  computeRewards = () => {
-    MonthlyTransactions.forEach((monthlyTransaction) => {
-      var monthlyTransacationValue = monthlyTransaction.transactions.reduce(
-        (rewardAccumilator, transactionValue, index) => {
-          if (transactionValue > 50 && transactionValue < 100) {
-            rewardAccumilator += transactionValue - 50;
-          } else if (transactionValue >= 100) {
-            rewardAccumilator += 2 * (transactionValue - 100) + 50;
-          }
-          return rewardAccumilator;
-        },
-        0
-      );
+    trasnactions = {};
 
-      var monthlyReward = this.state.monthlyReward;
-      monthlyReward[monthlyTransaction.month] = monthlyTransacationValue;
+    computeRewards = () => {
+        MonthlyTransactions.forEach((monthlyTransaction) => {
+            var monthlyTransacationValue = monthlyTransaction.transactions.reduce(
+                (rewardAccumilator, transactionValue, index) => {
+                    if (transactionValue > 50 && transactionValue < 100) {
+                        rewardAccumilator += transactionValue - 50;
+                    } else if (transactionValue >= 100) {
+                        rewardAccumilator += 2 * (transactionValue - 100) + 50;
+                    }
+                    return rewardAccumilator;
+                },
+                0
+            );
 
-      this.setState(
-        (state) => {
-          return {
-            totalReward: monthlyTransacationValue + state.totalReward,
-            monthlyReward,
-          };
-        },
-        () => console.log(this.state)
-      );
-    });
-  };
+            var monthlyReward = this.state.monthlyReward;
+            monthlyReward[monthlyTransaction.month] = monthlyTransacationValue;
 
-  render() {
-    return (
-      <div>
-        <button className="compute" onClick={() => this.computeRewards()}>
-          Compute Rewards
-        </button>
-        <br />
-        <br />
-        <div>
-          <header>Total Rewards: </header>
-          {this.state.totalReward}
-        </div>
-      </div>
-    );
-  }
+            this.setState(
+                (state) => {
+                    return {
+                        totalReward: monthlyTransacationValue + state.totalReward,
+                        monthlyReward,
+                    };
+                },
+                () => console.log(this.state)
+            );
+        });
+    };
+
+    render() {
+        return (
+            <div>
+                <button className="compute" onClick={() => this.computeRewards()}>
+                    Compute Rewards
+                </button>
+                <br/>
+                <br/>
+                <div>
+                    <header>Total Rewards:</header>
+                    {this.state.totalReward}
+                </div>
+            </div>
+        );
+    }
 }
