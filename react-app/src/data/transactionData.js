@@ -1,14 +1,14 @@
 export const MonthlyTransactions = [
   {
     month: "January",
-    transactions: [100, 200, 300],
+    transactions: [120],
   },
   {
     month: "February",
-    transactions: [400, 500, 600],
+    transactions: [70, 100, 150],
   },
   {
     month: "March",
-    transactions: [10, 20, 30],
+    transactions: [10, 20, 180],
   },
 ];

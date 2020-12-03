@@ -20,8 +20,15 @@ export default class RewardPointCalculator extends React.Component {
   computeRewards = () => {
     MonthlyTransactions.forEach((monthlyTransaction) => {
       var monthlyTransacationValue = monthlyTransaction.transactions.reduce(
-        (rewardAccumilator, transactionValue) =>
-          rewardAccumilator + transactionValue
+        (rewardAccumilator, transactionValue, index) => {
+          if (transactionValue > 50 && transactionValue < 100) {
+            rewardAccumilator += transactionValue - 50;
+          } else if (transactionValue >= 100) {
+            rewardAccumilator += 2 * (transactionValue - 100) + 50;
+          }
+          return rewardAccumilator;
+        },
+        0
       );
 
       var monthlyReward = this.state.monthlyReward;
@@ -45,8 +52,13 @@ export default class RewardPointCalculator extends React.Component {
         <button className="compute" onClick={() => this.computeRewards()}>
           Compute Rewards
         </button>
-        <br></br>
-        <div>{this.state.totalReward}</div>
+        <br />
+        <br />
+        <div>
+          <header>Total Rewards: </header>
+          {this.state.totalReward}
+          {/* {this.state.monthlyReward.forEach((el) => console.log(el))} */}
+        </div>
       </div>
     );
   }
