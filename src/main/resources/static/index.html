@@ -2,15 +2,38 @@
 <html>
 <head>
     <title>Rewards Calculator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
 <!--<p><a href="/hello">Greet the world!</a></p>-->
-
+<div className="App">
+    <header className="App-header">
+        <div>
+            <h4>Transactions: </h4>
+            <ul>
+                <li>
+                    <b>January: </b>[120]
+                </li>
+                <li>
+                    <b> February: </b>[70, 100, 150]
+                </li>
+                <li>
+                    <b>March: </b>[10, 20, 180]
+                </li>
+            </ul>
+        </div>
+        <p>
+            Click on the button below to compute the Total and Monthly rewards:
+        </p>
+        <RewardPointCalculator />
+        <h6>
+            Check the console (Ctrl + shift + i) to view the monthly rewards!
+        </h6>
+    </header>
+</div>
 <form action="/calculateRewards" method="GET" id="nameForm">
     <div>
-        <label for="nameField">How should the app call you?</label>
-        <input name="myName" id="nameField">
         <button>Greet me!</button>
     </div>
 </form>
