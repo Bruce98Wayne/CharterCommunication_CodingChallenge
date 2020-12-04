@@ -39,5 +39,6 @@ public class indexController {
         int totalRewards = 0;
         return calculateRewards(name, totalRewards);
 
+
     }
 }
