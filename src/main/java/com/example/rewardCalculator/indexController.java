@@ -19,7 +19,13 @@ public class indexController {
 
     private static Integer totalRewards = 0;
 
+    @GetMapping("/calculateRewards")
+    public String requestHandler() throws Exception {
+        return calculateRewards();
+    }
+
     @SuppressWarnings("unchecked")
+    // This function parses the JSON object and call the subsequent functions to compute rewards:
     public String calculateRewards()
     {
         //JSON parser object to parse read file
@@ -27,14 +33,13 @@ public class indexController {
 
         try (FileReader reader = new FileReader("src/main/resources/static/data/trasnsactionData.json")) {
             //Read JSON file
-            Object obj = jsonParser.parse(reader);
+            Object transactionObject = jsonParser.parse(reader);
 
-            JSONArray employeeList = (JSONArray) obj;
-            System.out.println(employeeList);
+            JSONArray transactionList = (JSONArray) transactionObject;
 
             HashMap<String, Integer> mappedMonthlyRewards = new HashMap<>();
 
-            employeeList.forEach( emp -> parseTransactionObject( (JSONObject) emp , mappedMonthlyRewards ));
+            transactionList.forEach( emp -> parseTransactionObject( (JSONObject) emp , mappedMonthlyRewards ));
             System.out.println(mappedMonthlyRewards);
 
         } catch (FileNotFoundException e) {
@@ -44,24 +49,24 @@ public class indexController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        System.out.println("Total Rewads are: " + totalRewards.toString());
 
-        return String.format("Total Rewards: %d!", totalRewards);
+        return String.format("Total Rewards: %d! \n \nCheck console for monthly rewards!", totalRewards);
     }
 
-    private static void parseTransactionObject(JSONObject employee, HashMap<String, Integer> map)
+    private static void parseTransactionObject(JSONObject transactionObject, HashMap<String, Integer> map)
     {
-        //Get employee object within list
-        JSONObject transactionObject = (JSONObject) employee;
         Integer rewardForEachTransaction = 0;
         Integer monthlyRewardAccumulator = 0;
 
-        //Get employee first name
+        //Get month and transaction from transactionObject
         String month = (String) transactionObject.get("month");
         ArrayList<Integer> transactions = new ArrayList<Integer>();
-        JSONArray jArray = (JSONArray) transactionObject.get("transactions");
-        if (jArray != null) {
-            for (int i = 0; i < jArray.size(); i++) {
-                Integer transaction = (Integer.parseInt(jArray.get(i).toString()));
+        JSONArray transactionJsonArray = (JSONArray) transactionObject.get("transactions");
+
+        if (transactionJsonArray != null) {
+            for (int i = 0; i < transactionJsonArray.size(); i++) {
+                Integer transaction = (Integer.parseInt(transactionJsonArray.get(i).toString()));
                 transactions.add(transaction);
                 rewardForEachTransaction = calculateRewardForEachTransaction(transaction);
                 monthlyRewardAccumulator += rewardForEachTransaction;
@@ -69,17 +74,9 @@ public class indexController {
         }
 
         totalRewards += monthlyRewardAccumulator;
-
         map.put(month, monthlyRewardAccumulator);
-        System.out.println(totalRewards);
-    }
 
-    @GetMapping("/")
-    public String sayHello(@RequestParam(value = "myName", defaultValue = "World") String name) throws Exception {
-
-        int totalRewards = 0;
-        return calculateRewards();
-
+        System.out.println("The rewards for the month " + month + " is " + monthlyRewardAccumulator.toString());
     }
 
     private static Integer calculateRewardForEachTransaction(Integer transactionAmount) {
@@ -93,4 +90,5 @@ public class indexController {
 
         return reward;
     }
+
 }
